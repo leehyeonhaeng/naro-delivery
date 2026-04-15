@@ -666,5 +666,18 @@ function submitCS(){
   document.getElementById('csDone').classList.add('show');
 }
 </script>
+  <script type="text/javascript">
+  (function(w, d, x, id){
+    s=d.createElement('script');
+    s.src='https://junior-connect.my.connect.aws/connectwidget/static/amazon-connect-chat-interface-client.js';
+    s.async=1;
+    s.id=id;
+    d.getElementsByTagName('head')[0].appendChild(s);
+    w[x] =  w[x] || function() { (w[x].ac = w[x].ac || []).push(arguments) };
+  })(window, document, 'amazon_connect', '5b0f7d3c-4c62-4f5d-8066-f6d793bc0d03');
+  amazon_connect('styles', { iconType: 'CHAT', openChat: { color: '#ffffff', backgroundColor: '#000000' }, closeChat: { color: '#ffffff', backgroundColor: '#000000'} });
+  amazon_connect('snippetId', 'QVFJREFIaW8wMUxuSXF6TFN1MWZjWkhIQStlS3Y3ZkFLMEU3eHNQTWk5L0crRjlBUXdFQXRsdVdaMitGdG9sQ3lybUhuZDJXQUFBQWJqQnNCZ2txaGtpRzl3MEJCd2FnWHpCZEFnRUFNRmdHQ1NxR1NJYjNEUUVIQVRBZUJnbGdoa2dCWlFNRUFTNHdFUVFNR3ZVbERYQnBEVW1IQkhPa0FnRVFnQ3V1Ti9TSnpwV1JmUWJsWGxZdGNaNzd6OE96NWE4b1ZkZ21RM2NtaWZXOWNZY0RRR280ckhoVzZFNkw6Ok92L3RpME9GM3c1dWRQcUZCemNFYjNhL1VVeTN4LzM3V2gzY25EK2d3SUxPOUpXSk4vdGsyYzlQNE5ZU3p3amxVQnJhd1BrcytxNGR3ajA4c0tpaWdrTklaNURDQlI1eUJ3Sk56dnZ1RVdXdStrdVgwQndtbXBLL1kzMy82Y0hKRkN6bk0zVDVLeXJtd3g1WUxxZWlOWWM5UDlyRXNndz0=');
+  amazon_connect('supportedMessagingContentTypes', [ 'text/plain', 'text/markdown', 'application/vnd.amazonaws.connect.message.interactive', 'application/vnd.amazonaws.connect.message.interactive.response' ]);
+</script>
 </body>
 </html>
