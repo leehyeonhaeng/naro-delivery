@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>NARO 로지스틱스</title>
+<style>
+:root{
+  --black:#0a0a0a;
+  --gray-900:#111827;
+  --gray-800:#1f2937;
+  --gray-600:#4b5563;
+  --gray-400:#9ca3af;
+  --gray-200:#e5e7eb;
+  --gray-100:#f3f4f6;
+  --gray-50:#f9fafb;
+  --white:#ffffff;
+  --blue:#2563eb;
+  --blue-dark:#1d4ed8;
+  --blue-light:#eff6ff;
+  --accent:#2563eb;
+  --radius-sm:8px;
+  --radius:14px;
+  --radius-lg:20px;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.08);
+  --shadow:0 4px 20px rgba(0,0,0,.07);
+  --shadow-lg:0 12px 48px rgba(0,0,0,.1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:var(--gray-900);background:var(--white);line-height:1.6;font-size:16px}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;font-family:inherit;border:none;outline:none}
+img{max-width:100%}
+
+/* ── HEADER ── */
+header{position:fixed;top:0;left:0;right:0;z-index:900;height:64px;background:rgba(255,255,255,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--gray-200)}
+.hd{max-width:1200px;margin:0 auto;padding:0 32px;height:100%;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:20px;font-weight:800;letter-spacing:-0.5px;color:var(--black);display:flex;align-items:center;gap:8px}
+.logo-dot{width:8px;height:8px;border-radius:50%;background:var(--blue);display:inline-block}
+.nav{display:flex;align-items:center;gap:36px}
+.nav a{font-size:14px;font-weight:500;color:var(--gray-600);transition:color .15s}
+.nav a:hover{color:var(--black)}
+.nav-cta{background:var(--black);color:var(--white);padding:9px 22px;border-radius:var(--radius-sm);font-size:13px;font-weight:600;transition:background .15s}
+.nav-cta:hover{background:var(--gray-800)}
+.hb{display:none;background:none;border:none;padding:4px;flex-direction:column;gap:5px}
+.hb span{display:block;width:20px;height:1.5px;background:var(--black);transition:.3s;transform-origin:center}
+.mob-nav{display:none;position:fixed;inset:0;top:64px;background:var(--white);z-index:800;flex-direction:column;padding:32px;gap:28px;border-top:1px solid var(--gray-200)}
+.mob-nav.open{display:flex}
+.mob-nav a{font-size:18px;font-weight:600;color:var(--gray-900)}
+
+/* ── SECTIONS ── */
+section{padding:120px 32px}
+.wrap{max-width:1200px;margin:0 auto}
+.label{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--blue);margin-bottom:16px}
+h2.sec-title{font-size:clamp(30px,3.5vw,48px);font-weight:800;letter-spacing:-1px;line-height:1.15;color:var(--black);margin-bottom:16px}
+p.sec-sub{font-size:17px;color:var(--gray-600);line-height:1.8;max-width:560px}
+
+/* ── HERO ── */
+#hero{padding:0;min-height:100vh;display:flex;flex-direction:column;background:var(--white)}
+.hero-body{flex:1;display:flex;align-items:center;padding:120px 32px 80px;max-width:1200px;margin:0 auto;width:100%;gap:64px}
+.hero-left{flex:1;max-width:640px}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;background:var(--gray-100);border-radius:99px;padding:6px 14px;font-size:12px;font-weight:600;color:var(--gray-600);margin-bottom:32px}
+.hero-tag span{width:6px;height:6px;border-radius:50%;background:var(--blue);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+h1{font-size:clamp(38px,5vw,68px);font-weight:900;letter-spacing:-2px;line-height:1.07;color:var(--black);margin-bottom:24px}
+h1 .blue{color:var(--blue)}
+.hero-desc{font-size:18px;color:var(--gray-600);line-height:1.8;margin-bottom:40px;max-width:520px}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn-black{background:var(--black);color:var(--white);padding:15px 32px;border-radius:var(--radius-sm);font-size:15px;font-weight:700;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
+.btn-black:hover{background:var(--gray-800);transform:translateY(-1px)}
+.btn-line{background:transparent;color:var(--black);padding:15px 32px;border-radius:var(--radius-sm);font-size:15px;font-weight:600;border:1.5px solid var(--gray-200);transition:all .2s}
+.btn-line:hover{border-color:var(--gray-600);background:var(--gray-50)}
+.hero-right{flex:1;display:flex;justify-content:flex-end;align-items:center}
+.hero-card{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:24px;padding:32px;width:100%;max-width:380px}
+.hero-card-title{font-size:13px;font-weight:700;color:var(--gray-400);letter-spacing:.5px;text-transform:uppercase;margin-bottom:20px}
+.stat-list{display:flex;flex-direction:column;gap:14px}
+.stat-row{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--white);border-radius:var(--radius-sm);border:1px solid var(--gray-200)}
+.stat-row-left{display:flex;align-items:center;gap:12px}
+.stat-ic{font-size:20px}
+.stat-name{font-size:14px;font-weight:600;color:var(--gray-900)}
+.stat-val{font-size:14px;font-weight:700;color:var(--blue)}
+.hero-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+.metric{text-align:center;padding:16px 12px;background:var(--white);border-radius:var(--radius-sm);border:1px solid var(--gray-200)}
+.metric-num{font-size:22px;font-weight:900;color:var(--black);letter-spacing:-1px}
+.metric-label{font-size:11px;color:var(--gray-400);margin-top:2px;font-weight:500}
+
+/* HERO STRIP */
+.hero-strip{background:var(--black);padding:20px 32px;overflow:hidden;white-space:nowrap}
+.strip-inner{display:inline-flex;gap:64px;animation:marquee 20s linear infinite}
+.strip-inner span{font-size:13px;font-weight:500;color:rgba(255,255,255,.5);letter-spacing:.3px}
+.strip-inner b{color:rgba(255,255,255,.9)}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ── SERVICES ── */
+#services{background:var(--gray-50)}
+.svc-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:56px;flex-wrap:wrap;gap:24px}
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--gray-200);border:1px solid var(--gray-200);border-radius:var(--radius-lg);overflow:hidden}
+.svc-item{background:var(--white);padding:40px 36px;transition:background .2s;cursor:default}
+.svc-item:hover{background:var(--gray-50)}
+.svc-num{font-size:12px;font-weight:700;color:var(--gray-400);letter-spacing:.5px;margin-bottom:28px}
+.svc-icon-wrap{width:52px;height:52px;border-radius:14px;background:var(--gray-100);display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:20px}
+.svc-name{font-size:19px;font-weight:800;color:var(--black);margin-bottom:10px;letter-spacing:-.3px}
+.svc-desc{font-size:14px;color:var(--gray-600);line-height:1.7;margin-bottom:20px}
+.svc-tag{display:inline-block;background:var(--blue-light);color:var(--blue);font-size:12px;font-weight:600;padding:4px 12px;border-radius:99px}
+
+/* ── WHY ── */
+#why{background:var(--white)}
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-top:64px}
+.why-left{display:flex;flex-direction:column;gap:36px}
+.why-item{display:flex;gap:20px;align-items:flex-start;padding-bottom:36px;border-bottom:1px solid var(--gray-100)}
+.why-item:last-child{border:none;padding-bottom:0}
+.why-num{font-size:13px;font-weight:800;color:var(--blue);min-width:32px;padding-top:3px}
+.why-title{font-size:18px;font-weight:800;color:var(--black);margin-bottom:6px;letter-spacing:-.3px}
+.why-desc{font-size:14px;color:var(--gray-600);line-height:1.75}
+.why-right{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:24px;padding:48px;display:flex;flex-direction:column;gap:24px}
+.big-metric{border-bottom:1px solid var(--gray-200);padding-bottom:24px}
+.big-metric:last-child{border:none;padding-bottom:0}
+.bm-num{font-size:52px;font-weight:900;color:var(--black);letter-spacing:-2px;line-height:1}
+.bm-num sup{font-size:24px}
+.bm-label{font-size:14px;color:var(--gray-600);margin-top:6px}
+.bm-bar{height:3px;background:var(--gray-200);border-radius:99px;margin-top:14px;overflow:hidden}
+.bm-fill{height:100%;background:var(--blue);border-radius:99px;transition:width 1.2s cubic-bezier(.25,.46,.45,.94)}
+
+/* ── ABOUT ── */
+#about{background:var(--black);color:var(--white)}
+#about h2.sec-title{color:var(--white)}
+#about p.sec-sub{color:rgba(255,255,255,.55)}
+.about-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+.about-text .label{color:rgba(255,255,255,.4);font-size:11px}
+.about-values{margin-top:40px;display:flex;flex-direction:column;gap:0}
+.av-row{padding:22px 0;border-top:1px solid rgba(255,255,255,.08);display:flex;gap:24px;align-items:flex-start}
+.av-row:last-child{border-bottom:1px solid rgba(255,255,255,.08)}
+.av-icon{font-size:22px;min-width:32px}
+.av-title{font-size:16px;font-weight:700;color:var(--white);margin-bottom:4px}
+.av-desc{font-size:14px;color:rgba(255,255,255,.5);line-height:1.7}
+.about-right{padding-top:32px}
+.about-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:36px;margin-bottom:16px}
+.about-card-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:rgba(255,255,255,.35);margin-bottom:20px}
+.timeline{display:flex;flex-direction:column;gap:16px}
+.tl-row{display:flex;gap:16px;align-items:flex-start}
+.tl-year{font-size:13px;font-weight:800;color:var(--blue);min-width:40px;padding-top:1px}
+.tl-text{font-size:14px;color:rgba(255,255,255,.65);line-height:1.6}
+.about-nums{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.an-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:24px}
+.an-num{font-size:32px;font-weight:900;color:var(--white);letter-spacing:-1px}
+.an-label{font-size:13px;color:rgba(255,255,255,.4);margin-top:4px}
+
+/* ── CS ── */
+#cs{background:var(--gray-50)}
+.cs-inner{display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:56px}
+.cs-contact{display:flex;flex-direction:column;gap:12px}
+.cc-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius);padding:24px 28px;display:flex;align-items:center;gap:20px;transition:box-shadow .2s}
+.cc-card:hover{box-shadow:var(--shadow)}
+.cc-ic{width:48px;height:48px;border-radius:12px;background:var(--gray-100);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.cc-title{font-size:13px;font-weight:600;color:var(--gray-400);margin-bottom:4px}
+.cc-val{font-size:16px;font-weight:800;color:var(--black)}
+.cc-desc{font-size:12px;color:var(--gray-400);margin-top:3px}
+.cs-form-box{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:40px;box-shadow:var(--shadow-sm)}
+.cs-form-title{font-size:20px;font-weight:800;color:var(--black);margin-bottom:28px;letter-spacing:-.3px}
+.fg{margin-bottom:18px}
+.fl{font-size:13px;font-weight:600;color:var(--gray-600);display:block;margin-bottom:7px}
+.fc{width:100%;padding:12px 16px;border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);font-size:14px;outline:none;transition:border .15s;font-family:inherit;color:var(--gray-900);background:var(--white)}
+.fc:focus{border-color:var(--blue)}
+.fc-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.submit-btn{width:100%;background:var(--black);color:var(--white);padding:14px;border-radius:var(--radius-sm);font-size:15px;font-weight:700;transition:background .15s;font-family:inherit;margin-top:4px}
+.submit-btn:hover{background:var(--gray-800)}
+.form-done{display:none;text-align:center;padding:32px 0}
+.form-done.show{display:block}
+
+/* ── CTA BAND ── */
+.cta-band{background:var(--blue);padding:100px 32px;text-align:center}
+.cta-band h2{font-size:clamp(28px,3.5vw,44px);font-weight:900;color:var(--white);letter-spacing:-1px;margin-bottom:12px}
+.cta-band p{font-size:17px;color:rgba(255,255,255,.75);margin-bottom:36px}
+.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-white{background:var(--white);color:var(--blue);padding:14px 32px;border-radius:var(--radius-sm);font-size:15px;font-weight:700;transition:all .2s}
+.btn-white:hover{background:var(--blue-light);transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:rgba(255,255,255,.8);padding:14px 32px;border-radius:var(--radius-sm);font-size:15px;font-weight:600;border:1.5px solid rgba(255,255,255,.3);transition:all .2s}
+.btn-ghost:hover{background:rgba(255,255,255,.1);color:var(--white)}
+
+/* ── FOOTER ── */
+footer{background:var(--gray-900);padding:64px 32px 36px}
+.ft{max-width:1200px;margin:0 auto}
+.ft-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,.06)}
+.ft-logo{font-size:18px;font-weight:900;color:var(--white);letter-spacing:-.5px;margin-bottom:12px}
+.ft-desc{font-size:13px;color:rgba(255,255,255,.4);line-height:1.8}
+.ft-col-t{font-size:12px;font-weight:700;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.5px;margin-bottom:16px}
+.ft-links{list-style:none;display:flex;flex-direction:column;gap:10px}
+.ft-links a{font-size:13px;color:rgba(255,255,255,.35);transition:color .15s}
+.ft-links a:hover{color:rgba(255,255,255,.8)}
+.ft-bot{display:flex;justify-content:space-between;align-items:center;padding-top:28px;flex-wrap:wrap;gap:12px}
+.ft-bot p{font-size:12px;color:rgba(255,255,255,.25)}
+.ft-badges{display:flex;gap:8px}
+.ftb{font-size:11px;color:rgba(255,255,255,.25);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);border-radius:4px;padding:3px 10px}
+
+/* ── RESPONSIVE ── */
+@media(max-width:960px){
+  .hero-right{display:none}
+  .svc-grid{grid-template-columns:1fr 1fr}
+  .why-grid{grid-template-columns:1fr;gap:48px}
+  .about-inner{grid-template-columns:1fr;gap:48px}
+  .cs-inner{grid-template-columns:1fr}
+  .ft-top{grid-template-columns:1fr 1fr}
+}
+@media(max-width:640px){
+  section{padding:80px 20px}
+  .hd{padding:0 20px}
+  .hero-body{padding:100px 20px 60px}
+  .nav{display:none}
+  .hb{display:flex}
+  .svc-grid{grid-template-columns:1fr}
+  .fc-row{grid-template-columns:1fr}
+  .ft-top{grid-template-columns:1fr}
+  .cta-band{padding:72px 20px}
+}
+
+/* ── ANIMATIONS ── */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease}
+.reveal.visible{opacity:1;transform:none}
+.reveal-delay-1{transition-delay:.1s}
+.reveal-delay-2{transition-delay:.2s}
+.reveal-delay-3{transition-delay:.3s}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="hd">
+    <div class="logo"><span class="logo-dot"></span>NARO</div>
+    <nav class="nav">
+      <a href="#services">서비스</a>
+      <a href="#why">왜 나로인가</a>
+      <a href="#about">회사소개</a>
+      <a href="#cs">고객센터</a>
+      <a href="#cs" class="nav-cta">문의하기</a>
+    </nav>
+    <button class="hb" onclick="toggleMob()" aria-label="메뉴">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="mob-nav" id="mobNav">
+  <a href="#services" onclick="toggleMob()">서비스</a>
+  <a href="#why" onclick="toggleMob()">왜 나로인가</a>
+  <a href="#about" onclick="toggleMob()">회사소개</a>
+  <a href="#cs" onclick="toggleMob()">고객센터</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-body">
+    <div class="hero-left">
+      <div class="hero-tag"><span></span>전국 네트워크 물류 파트너</div>
+      <h1>더 빠르게.<br/>더 정확하게.<br/><span class="blue">NARO.</span></h1>
+      <p class="hero-desc">나로 로지스틱스는 전국 1,800개 거점과 스마트 물류 시스템으로 당신의 비즈니스를 연결합니다.</p>
+      <div class="hero-btns">
+        <button class="btn-black" onclick="document.getElementById('cs').scrollIntoView({behavior:'smooth'})">서비스 시작하기 →</button>
+        <button class="btn-line" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})">서비스 살펴보기</button>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-card">
+        <div class="hero-card-title">Today's Overview</div>
+        <div class="stat-list">
+          <div class="stat-row">
+            <div class="stat-row-left"><span class="stat-ic">📦</span><span class="stat-name">오늘 처리 건수</span></div>
+            <span class="stat-val" id="counter1">0</span>
+          </div>
+          <div class="stat-row">
+            <div class="stat-row-left"><span class="stat-ic">🚚</span><span class="stat-name">배송 중</span></div>
+            <span class="stat-val" id="counter2">0</span>
+          </div>
+          <div class="stat-row">
+            <div class="stat-row-left"><span class="stat-ic">✅</span><span class="stat-name">완료율</span></div>
+            <span class="stat-val" id="counter3">0%</span>
+          </div>
+        </div>
+        <div class="hero-metrics">
+          <div class="metric"><div class="metric-num">D+1</div><div class="metric-label">전국 익일</div></div>
+          <div class="metric"><div class="metric-num">24H</div><div class="metric-label">실시간 추적</div></div>
+          <div class="metric"><div class="metric-num">99%</div><div class="metric-label">성공률</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-strip">
+    <div class="strip-inner" id="strip">
+      <span><b>전국 익일 배송</b> · 당일 특급 서비스</span>
+      <span><b>스마트 실시간 추적</b> · 24시간 모니터링</span>
+      <span><b>기업 계약 서비스</b> · 전담 매니저 배정</span>
+      <span><b>냉장·냉동 특수 배송</b> · 신선도 보장</span>
+      <span><b>전국 익일 배송</b> · 당일 특급 서비스</span>
+      <span><b>스마트 실시간 추적</b> · 24시간 모니터링</span>
+      <span><b>기업 계약 서비스</b> · 전담 매니저 배정</span>
+      <span><b>냉장·냉동 특수 배송</b> · 신선도 보장</span>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="wrap">
+    <div class="svc-header">
+      <div class="reveal">
+        <span class="label">Services</span>
+        <h2 class="sec-title">필요한 만큼,<br/>딱 맞게.</h2>
+      </div>
+      <p class="sec-sub reveal reveal-delay-1" style="margin-bottom:0">비즈니스 규모와 상황에 관계없이 최적화된 배송 솔루션을 제공합니다.</p>
+    </div>
+    <div class="svc-grid reveal">
+      <div class="svc-item">
+        <div class="svc-num">01</div>
+        <div class="svc-icon-wrap">⚡</div>
+        <div class="svc-name">당일 특급</div>
+        <div class="svc-desc">오전 11시 이전 접수 시 당일 저녁까지 전달. 수도권 전 지역 커버.</div>
+        <span class="svc-tag">수도권 전용</span>
+      </div>
+      <div class="svc-item">
+        <div class="svc-num">02</div>
+        <div class="svc-icon-wrap">📦</div>
+        <div class="svc-name">일반 택배</div>
+        <div class="svc-desc">전국 익일 배송 기본. 최대 30kg, 합리적인 요금으로 안전하게.</div>
+        <span class="svc-tag">전국</span>
+      </div>
+      <div class="svc-item">
+        <div class="svc-num">03</div>
+        <div class="svc-icon-wrap">❄️</div>
+        <div class="svc-name">냉장·냉동</div>
+        <div class="svc-desc">산지 직송부터 편의점 납품까지. 전용 콜드체인으로 신선도를 지킵니다.</div>
+        <span class="svc-tag">온도 관리</span>
+      </div>
+      <div class="svc-item">
+        <div class="svc-num">04</div>
+        <div class="svc-icon-wrap">🏢</div>
+        <div class="svc-name">기업 계약</div>
+        <div class="svc-desc">쇼핑몰, 제조사 전용 대량 배송. 월 정산, 전담 기사, API 연동 지원.</div>
+        <span class="svc-tag">볼륨 할인</span>
+      </div>
+      <div class="svc-item">
+        <div class="svc-num">05</div>
+        <div class="svc-icon-wrap">🔒</div>
+        <div class="svc-name">귀중품 배송</div>
+        <div class="svc-desc">고가 제품 전담 배송. 최대 500만원 보험, 수령인 본인 확인 인계.</div>
+        <span class="svc-tag">보험 포함</span>
+      </div>
+      <div class="svc-item">
+        <div class="svc-num">06</div>
+        <div class="svc-icon-wrap">🌏</div>
+        <div class="svc-name">해외 특송</div>
+        <div class="svc-desc">미국·일본·중국 등 30개국 직항 서비스. 통관 대행 포함.</div>
+        <span class="svc-tag">30개국</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section id="why">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="label">Why NARO</span>
+      <h2 class="sec-title">숫자가 증명합니다</h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-left">
+        <div class="why-item reveal">
+          <div class="why-num">01</div>
+          <div>
+            <div class="why-title">전국 최대 거점 네트워크</div>
+            <div class="why-desc">1,800개 이상의 허브·서브터미널을 통해 어떤 지역이든 익일 배송이 가능합니다. 도서 산간 지역도 책임집니다.</div>
+          </div>
+        </div>
+        <div class="why-item reveal reveal-delay-1">
+          <div class="why-num">02</div>
+          <div>
+            <div class="why-title">AI 기반 스마트 분류</div>
+            <div class="why-desc">자동화 분류 시스템과 AI 경로 최적화로 오류율 0.1% 이하를 유지합니다. 물건이 어디 있는지 실시간으로 추적됩니다.</div>
+          </div>
+        </div>
+        <div class="why-item reveal reveal-delay-2">
+          <div class="why-num">03</div>
+          <div>
+            <div class="why-title">간편한 API 연동</div>
+            <div class="why-desc">쇼핑몰, ERP, WMS 연동이 쉽습니다. RESTful API와 전용 SDK를 무료 제공하며, 기술 지원팀이 함께합니다.</div>
+          </div>
+        </div>
+        <div class="why-item reveal reveal-delay-3">
+          <div class="why-num">04</div>
+          <div>
+            <div class="why-title">투명한 정산 시스템</div>
+            <div class="why-desc">월별 명세서, 실시간 대시보드, 세금계산서 자동 발행. 숨겨진 비용 없이 합의된 요금만 청구됩니다.</div>
+          </div>
+        </div>
+      </div>
+      <div class="why-right reveal reveal-delay-1">
+        <div class="big-metric">
+          <div class="bm-num">99<sup>%</sup></div>
+          <div class="bm-label">배송 성공률 (2024년 기준)</div>
+          <div class="bm-bar"><div class="bm-fill" style="width:0%" data-width="99%"></div></div>
+        </div>
+        <div class="big-metric">
+          <div class="bm-num">1,800<sup>+</sup></div>
+          <div class="bm-label">전국 거점 수</div>
+          <div class="bm-bar"><div class="bm-fill" style="width:0%" data-width="90%"></div></div>
+        </div>
+        <div class="big-metric">
+          <div class="bm-num">8,500<sup>+</sup></div>
+          <div class="bm-label">기업 계약 고객</div>
+          <div class="bm-bar"><div class="bm-fill" style="width:0%" data-width="75%"></div></div>
+        </div>
+        <div class="big-metric">
+          <div class="bm-num">0.1<sup>%</sup></div>
+          <div class="bm-label">오배송률</div>
+          <div class="bm-bar"><div class="bm-fill" style="width:0%" data-width="99%"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="wrap">
+    <div class="about-inner">
+      <div class="about-text reveal">
+        <span class="label">About NARO</span>
+        <h2 class="sec-title" style="margin-top:14px">물류를 통해<br/>연결하는 가치</h2>
+        <p class="sec-sub">나로 로지스틱스는 2003년 설립 이후 대한민국 물류 산업의 디지털 전환을 이끌어왔습니다. '나로(NARO)'는 '나로부터 시작되는 연결'을 의미하며, 발송인과 수령인 모두의 경험을 최우선으로 생각합니다.</p>
+        <div class="about-values">
+          <div class="av-row">
+            <div class="av-icon">⚡</div>
+            <div>
+              <div class="av-title">Speed First</div>
+              <div class="av-desc">빠른 배송은 기본입니다. 나로는 속도를 타협하지 않습니다.</div>
+            </div>
+          </div>
+          <div class="av-row">
+            <div class="av-icon">🛡️</div>
+            <div>
+              <div class="av-title">Zero Error</div>
+              <div class="av-desc">오배송·파손 없는 완벽한 배송을 향해 끊임없이 개선합니다.</div>
+            </div>
+          </div>
+          <div class="av-row">
+            <div class="av-icon">🌱</div>
+            <div>
+              <div class="av-title">Green Logistics</div>
+              <div class="av-desc">전기 배송 차량 전환과 친환경 포장재로 탄소 발자국을 줄입니다.</div>
+            </div>
+          </div>
+          <div class="av-row">
+            <div class="av-icon">🤝</div>
+            <div>
+              <div class="av-title">Partner Growth</div>
+              <div class="av-desc">고객사의 성장이 나로의 성장입니다. 함께 크는 물류 파트너.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="about-right reveal reveal-delay-2">
+        <div class="about-card">
+          <div class="about-card-title">연혁</div>
+          <div class="timeline">
+            <div class="tl-row"><div class="tl-year">2003</div><div class="tl-text">나로 로지스틱스 설립, 수도권 서비스 시작</div></div>
+            <div class="tl-row"><div class="tl-year">2008</div><div class="tl-text">전국 거점 500개 돌파, 전국 서비스 확장</div></div>
+            <div class="tl-row"><div class="tl-year">2013</div><div class="tl-text">실시간 추적 시스템 'NARO Track' 런칭</div></div>
+            <div class="tl-row"><div class="tl-year">2018</div><div class="tl-text">AI 자동 분류 센터 도입, 오배송률 0.1% 달성</div></div>
+            <div class="tl-row"><div class="tl-year">2021</div><div class="tl-text">기업 API 서비스 오픈, 계약 고객 5,000사 돌파</div></div>
+            <div class="tl-row"><div class="tl-year">2024</div><div class="tl-text">전기 배송 차량 2,000대 전환, ESG 경영 선언</div></div>
+          </div>
+        </div>
+        <div class="about-nums">
+          <div class="an-card"><div class="an-num">21<span style="font-size:18px">년</span></div><div class="an-label">업력</div></div>
+          <div class="an-card"><div class="an-num">1.8K<span style="font-size:18px">+</span></div><div class="an-label">전국 거점</div></div>
+          <div class="an-card"><div class="an-num">9,000<span style="font-size:18px">+</span></div><div class="an-label">배송 기사</div></div>
+          <div class="an-card"><div class="an-num">8,500<span style="font-size:18px">+</span></div><div class="an-label">기업 고객</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<div class="cta-band">
+  <h2>지금 바로 시작하세요</h2>
+  <p>기업 계약부터 개인 배송까지, 나로가 함께합니다.</p>
+  <div class="cta-btns">
+    <button class="btn-white" onclick="document.getElementById('cs').scrollIntoView({behavior:'smooth'})">무료 상담 신청</button>
+    <button class="btn-ghost" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})">서비스 보기</button>
+  </div>
+</div>
+
+<!-- CS -->
+<section id="cs">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="label">Customer Service</span>
+      <h2 class="sec-title">무엇이든<br/>도와드립니다</h2>
+      <p class="sec-sub">궁금한 점이나 서비스 도입 문의는 언제든 연락해 주세요. 빠르게 답변드립니다.</p>
+    </div>
+    <div class="cs-inner">
+      <div class="cs-contact reveal">
+        <div class="cc-card">
+          <div class="cc-ic">📞</div>
+          <div>
+            <div class="cc-title">대표 번호</div>
+            <div class="cc-val">1588-2030</div>
+            <div class="cc-desc">평일 09:00 – 18:00 (공휴일 제외)</div>
+          </div>
+        </div>
+        <div class="cc-card">
+          <div class="cc-ic">💬</div>
+          <div>
+            <div class="cc-title">카카오톡 채널</div>
+            <div class="cc-val">@나로로지스틱스</div>
+            <div class="cc-desc">365일 챗봇 운영 · 빠른 답변</div>
+          </div>
+        </div>
+        <div class="cc-card">
+          <div class="cc-ic">✉️</div>
+          <div>
+            <div class="cc-title">이메일</div>
+            <div class="cc-val" style="font-size:14px">hello@narologistics.kr</div>
+            <div class="cc-desc">영업일 24시간 내 답변</div>
+          </div>
+        </div>
+        <div class="cc-card">
+          <div class="cc-ic">🏢</div>
+          <div>
+            <div class="cc-title">본사</div>
+            <div class="cc-val" style="font-size:14px;line-height:1.4">서울시 강남구 테헤란로 231<br/>나로빌딩 14층</div>
+          </div>
+        </div>
+      </div>
+      <div class="cs-form-box reveal reveal-delay-1">
+        <div id="csFormBody">
+          <div class="cs-form-title">온라인 문의</div>
+          <div class="fg">
+            <label class="fl">문의 유형</label>
+            <select class="fc">
+              <option>서비스 도입 / 기업 계약</option>
+              <option>배송 관련 문의</option>
+              <option>요금 안내</option>
+              <option>분실 · 파손 접수</option>
+              <option>기타</option>
+            </select>
+          </div>
+          <div class="fc-row">
+            <div class="fg">
+              <label class="fl">이름 *</label>
+              <input class="fc" id="cs-name" placeholder="홍길동"/>
+            </div>
+            <div class="fg">
+              <label class="fl">연락처 *</label>
+              <input class="fc" id="cs-tel" placeholder="010-0000-0000"/>
+            </div>
+          </div>
+          <div class="fg">
+            <label class="fl">회사명 (선택)</label>
+            <input class="fc" id="cs-co" placeholder="(주)나로커머스"/>
+          </div>
+          <div class="fg">
+            <label class="fl">문의 내용 *</label>
+            <textarea class="fc" id="cs-msg" rows="5" placeholder="궁금하신 점을 자유롭게 작성해 주세요." style="resize:none"></textarea>
+          </div>
+          <button class="submit-btn" onclick="submitCS()">문의 접수하기</button>
+        </div>
+        <div class="form-done" id="csDone">
+          <div style="font-size:48px;margin-bottom:16px">✅</div>
+          <div style="font-size:20px;font-weight:800;color:var(--black);margin-bottom:8px">접수 완료!</div>
+          <div style="font-size:14px;color:var(--gray-600);line-height:1.9">영업일 기준 24시간 이내 답변드리겠습니다.<br/>급한 문의는 <b>1588-2030</b>으로 전화해 주세요.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft">
+    <div class="ft-top">
+      <div>
+        <div class="ft-logo">NARO</div>
+        <p class="ft-desc">나로 로지스틱스(주)<br/>대한민국 물류를 더 빠르고 정확하게.</p>
+      </div>
+      <div>
+        <div class="ft-col-t">서비스</div>
+        <ul class="ft-links">
+          <li><a href="#services">당일 특급</a></li>
+          <li><a href="#services">일반 택배</a></li>
+          <li><a href="#services">냉장·냉동</a></li>
+          <li><a href="#services">기업 계약</a></li>
+          <li><a href="#services">해외 특송</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="ft-col-t">지원</div>
+        <ul class="ft-links">
+          <li><a href="#cs">고객센터</a></li>
+          <li><a href="#">API 문서</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">공지사항</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="ft-col-t">회사</div>
+        <ul class="ft-links">
+          <li><a href="#about">회사 소개</a></li>
+          <li><a href="#">채용</a></li>
+          <li><a href="#">개인정보처리방침</a></li>
+          <li><a href="#">이용약관</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="ft-bot">
+      <p>© 2024 나로로지스틱스(주) · 사업자등록번호 123-45-67890 · 대표 이나로 · 통신판매업신고 제2024-서울강남-0001호</p>
+      <div class="ft-badges"><span class="ftb">ISO 9001</span><span class="ftb">개인정보보호</span></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Mobile nav
+function toggleMob(){document.getElementById('mobNav').classList.toggle('open')}
+
+// Counter animation
+function animateCounter(el,end,suffix,duration){
+  let start=0,step=end/60;
+  const timer=setInterval(()=>{
+    start=Math.min(start+step,end);
+    el.textContent=Math.floor(start).toLocaleString()+suffix;
+    if(start>=end)clearInterval(timer);
+  },duration/60);
+}
+setTimeout(()=>{
+  animateCounter(document.getElementById('counter1'),142385,'건',1800);
+  animateCounter(document.getElementById('counter2'),38291,'건',2000);
+  document.getElementById('counter3').textContent='0%';
+  let p=0;
+  const t=setInterval(()=>{p=Math.min(p+1.65,99.2);document.getElementById('counter3').textContent=p.toFixed(1)+'%';if(p>=99.2)clearInterval(t);},30);
+},600);
+
+// Scroll reveal
+const ro=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('visible');
+      // bar animation
+      e.target.querySelectorAll('.bm-fill[data-width]').forEach(b=>{
+        setTimeout(()=>{b.style.width=b.dataset.width},200);
+      });
+    }
+  });
+},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+
+// CS form
+function submitCS(){
+  const n=document.getElementById('cs-name').value.trim();
+  const t=document.getElementById('cs-tel').value.trim();
+  const m=document.getElementById('cs-msg').value.trim();
+  if(!n||!t||!m){alert('이름, 연락처, 문의 내용을 입력해주세요.');return;}
+  document.getElementById('csFormBody').style.display='none';
+  document.getElementById('csDone').classList.add('show');
+}
+</script>
+</body>
+</html>
